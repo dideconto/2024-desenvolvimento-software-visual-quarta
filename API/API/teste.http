@@ -1,9 +1,10 @@
-### Testar a primeira funcionalidade
+### Testar a raiz da aplicação
 GET http://localhost:5020
 
-### Testar a segunda funcionalidade
-GET http://localhost:5020/segundafuncionalidade
+### Listar Produtos
+GET http://localhost:5020/produto/listar
 
-### Retornar endereço
-GET http://localhost:5020/retonarendereco
+### Cadastrar Produto
+POST http://localhost:5020/produto/cadastrar/agua
+
 

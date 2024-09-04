@@ -2,24 +2,62 @@
 // - Rest Client - Extensão do VS Code
 // - Postman
 // - Insomnia
-//MINIMAL APIs
+//MINIMAL APIs - C# - Minimal APIs
+
+using API.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-//EndPoints - Funcionalidades
-//Configurar a URL e o método/verbo
-app.MapGet("/", () => "Hello World em C#!");
 
-app.MapGet("/segundafuncionalidade", () => "Segunda funcionalidade da API");
-
-app.MapGet("/retonarendereco", () => 
+List<Produto> produtos = new List<Produto>();
+produtos.Add(new Produto()
 {
-    dynamic endereco = new {
-        rua = "Parigot de Souza",
-        numero = 5300,
-        cep = "81290-350"
-    };
-    return endereco;
+    Nome = "Notebook",
+    Preco = 5000,
+    Quantidade = 54
+});
+produtos.Add(new Produto()
+{
+    Nome = "Desktop",
+    Preco = 3500,
+    Quantidade = 150
+});
+produtos.Add(new Produto()
+{
+    Nome = "Monitor",
+    Preco = 1200,
+    Quantidade = 15
+});
+produtos.Add(new Produto()
+{
+    Nome = "Caixa de Som",
+    Preco = 650,
+    Quantidade = 70
+});
+
+
+//EndPoints - Funcionalidades
+//Request - Configurar a URL e o método/verbo HTTP
+//Reponse - Retornar os dados (json/xml) e 
+app.MapGet("/", () => "API de Produtos");
+
+//GET: /produto/listar
+app.MapGet("/produto/listar", () =>
+{
+    return Results.Ok(produtos);
+});
+
+//POST: /produto/cadastrar
+app.MapPost("/produto/cadastrar/{nome}", 
+    (string nome) =>
+{
+    //Criar o objeto e preencher
+    Produto produto = new Produto();
+    produto.Nome = nome;
+    //Adicionando dentro da lista
+    produtos.Add(produto);
+    return Results.Ok(produtos);
 });
 
 //Criar um funcionalidade para receber informações
@@ -28,3 +66,18 @@ app.MapGet("/retonarendereco", () =>
 //Guardar as informações em uma lista
 
 app.Run();
+
+//C# - Utilização dos gets e sets
+// Produto produto = new Produto()
+// {
+//     Nome = "",
+//     Preco = 5,
+//     Quantidade = 150
+// };
+// Console.WriteLine("Preço: " + produto.Preco);
+
+//JAVA - Utilização dos gets e sets
+// Produto produto = new Produto();
+// produto.setPreco(5);
+// Console.WriteLine("Preço: " + 
+//     produto.getPreco());
