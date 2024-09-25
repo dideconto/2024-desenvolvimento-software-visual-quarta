@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-
 List<Produto> produtos =
 [
     new Produto() { Nome = "Notebook", Preco = 5000, Quantidade = 54 },
@@ -21,7 +20,7 @@ List<Produto> produtos =
 
 //EndPoints - Funcionalidades
 //Request - Configurar a URL e o método/verbo HTTP
-//Reponse - Retornar os dados (json/xml) e 
+//Reponse - Retornar os dados (json/xml) e códigos de status HTTP
 app.MapGet("/", () => "API de Produtos");
 
 //GET: /api/produto/listar
@@ -37,6 +36,7 @@ app.MapGet("/api/produto/listar", () =>
 //GET: /api/produto/buscar/{id}
 app.MapGet("/api/produto/buscar/{id}", ([FromRoute] string id) =>
 {
+    //Expressão lambda em C# =>
     Produto? produto = produtos.Find(x => x.Id == id);
     if (produto == null)
     {
@@ -65,7 +65,8 @@ app.MapDelete("/api/produto/deletar/{id}", ([FromRoute] string id) =>
 });
 
 //PUT: /api/produto/alterar/{id}
-app.MapPut("/api/produto/alterar/{id}", ([FromRoute] string id, [FromBody] Produto produtoAlterado) =>
+app.MapPut("/api/produto/alterar/{id}", ([FromRoute] string id,
+    [FromBody] Produto produtoAlterado) =>
 {
     Produto? produto = produtos.Find(x => x.Id == id);
     if (produto == null)
