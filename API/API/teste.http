@@ -5,7 +5,7 @@ GET http://localhost:5020
 GET http://localhost:5020/api/produto/listar
 
 ### Buscar produto
-GET http://localhost:5020/api/produto/buscar/5b3d43bd-fb74-4781-92ff-9f5a969b682d
+GET http://localhost:5020/api/produto/buscar/e05cc469-d0df-462e-82ae-5153aaf3f540
 
 ### Cadastrar produto
 POST http://localhost:5020/api/produto/cadastrar
@@ -14,7 +14,8 @@ Content-Type: application/json
 {
     "nome" : "Água",
     "preco" : 4.5,
-    "quantidade" : 153
+    "quantidade" : 153,
+    "descricao" : "Alimento"
 }
 
 ### Deletar produto
