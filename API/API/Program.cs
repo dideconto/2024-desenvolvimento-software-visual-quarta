@@ -9,6 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDataContext>();
+
+builder.Services.AddCors(options => 
+    options.AddPolicy("Acesso Total", 
+        configs => configs
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod())
+);
+
 var app = builder.Build();
 
 List<Produto> produtos =
@@ -90,5 +99,7 @@ app.MapPut("/api/produto/alterar/{id}", ([FromRoute] string id,
     ctx.SaveChanges();
     return Results.Ok(produto);
 });
+
+app.UseCors("Acesso Total");
 
 app.Run();
