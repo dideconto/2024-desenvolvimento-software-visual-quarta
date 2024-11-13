@@ -1,23 +1,41 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Produto } from "../../../models/Produto";
 import { Categoria } from "../../../models/Categoria";
-import axios from "axios";
 
-function ProdutoCadastro() {
+function ProdutoAlterar() {
+  const { id } = useParams();
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [quantidade, setQuantidade] = useState("");
-  const [preco, setPreco] = useState("");
+  const [quantidade, setQuantidade] = useState(0);
+  const [preco, setPreco] = useState(0);
   const [categoriaId, setCategoriaId] = useState(0);
 
   useEffect(() => {
+    if (id) {
+      axios
+        .get<Produto>(
+          `http://localhost:5020/api/produto/buscar/${id}`
+        )
+        .then((resposta) => {
+          setNome(resposta.data.nome);
+          setDescricao(resposta.data.descricao);
+          setQuantidade(resposta.data.quantidade);
+          setPreco(resposta.data.preco);
+          buscarCategorias();
+        });
+    }
+  }, []);
+
+  function buscarCategorias() {
     axios
       .get<Categoria[]>("http://localhost:5020/api/categoria/listar")
       .then((resposta) => {
         setCategorias(resposta.data);
       });
-  });
+  }
 
   function enviarProduto(e: any) {
     e.preventDefault();
@@ -30,24 +48,16 @@ function ProdutoCadastro() {
       categoriaId: categoriaId,
     };
 
-    fetch("http://localhost:5020/api/produto/cadastrar", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(produto),
-    })
+    axios
+      .put(`http://localhost:5020/api/produto/alterar/${id}`, produto)
       .then((resposta) => {
-        return resposta.json();
-      })
-      .then((produto) => {
-        console.log("Produto cadastrado", produto);
+        console.log(resposta.data);
       });
   }
 
   return (
-    <div id="cadastrar_produto" className="container">
-      <h1>Cadastrar Produto</h1>
+    <div id="alterar-produto" className="container">
+      <h1>Alterar Produto</h1>
       <form onSubmit={enviarProduto}>
         <div>
           <label htmlFor="nome">Nome</label>
@@ -55,6 +65,7 @@ function ProdutoCadastro() {
             type="text"
             id="nome"
             name="nome"
+            value={nome}
             required
             onChange={(e: any) => setNome(e.target.value)}
           />
@@ -65,6 +76,7 @@ function ProdutoCadastro() {
           <input
             type="text"
             id="descricao"
+            value={descricao}
             name="descricao"
             onChange={(e: any) => setDescricao(e.target.value)}
           />
@@ -75,6 +87,7 @@ function ProdutoCadastro() {
           <input
             type="number"
             id="preco"
+            value={preco}
             name="preco"
             onChange={(e: any) => setPreco(e.target.value)}
           />
@@ -85,6 +98,7 @@ function ProdutoCadastro() {
           <input
             type="number"
             id="quantidade"
+            value={quantidade}
             name="quantidade"
             onChange={(e: any) => setQuantidade(e.target.value)}
           />
@@ -112,4 +126,4 @@ function ProdutoCadastro() {
   );
 }
 
-export default ProdutoCadastro;
+export default ProdutoAlterar;

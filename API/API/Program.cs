@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDataContext>();
 
-builder.Services.AddCors(options => 
-    options.AddPolicy("Acesso Total", 
+builder.Services.AddCors(options =>
+    options.AddPolicy("Acesso Total",
         configs => configs
             .AllowAnyOrigin()
             .AllowAnyHeader()
@@ -84,7 +84,7 @@ app.MapPost("/api/produto/cadastrar", ([FromBody] Produto produto,
     [FromServices] AppDataContext ctx) =>
 {
     Categoria? categoria = ctx.Categorias.Find(produto.CategoriaId);
-    if(categoria is null)
+    if (categoria is null)
     {
         return Results.NotFound();
     }
@@ -118,10 +118,16 @@ app.MapPut("/api/produto/alterar/{id}", ([FromRoute] string id,
     {
         return Results.NotFound();
     }
+    Categoria? categoria = ctx.Categorias.Find(produto.CategoriaId);
+    if (categoria is null)
+    {
+        return Results.NotFound();
+    }
+    produto.Categoria = categoria;
     produto.Nome = produtoAlterado.Nome;
     produto.Quantidade = produtoAlterado.Quantidade;
     produto.Preco = produtoAlterado.Preco;
-    ctx.Produtos.Update(produtoAlterado);
+    ctx.Produtos.Update(produto);
     ctx.SaveChanges();
     return Results.Ok(produto);
 });

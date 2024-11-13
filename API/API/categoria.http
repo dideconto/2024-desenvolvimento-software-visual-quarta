@@ -9,5 +9,5 @@ POST http://localhost:5020/api/categoria/cadastrar
 Content-Type: application/json
 
 {
-    "nome" : "Roupas"
+    "nome" : "Celulares"
 }
