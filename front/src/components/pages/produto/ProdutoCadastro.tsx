@@ -8,23 +8,23 @@ function ProdutoCadastro() {
     const [quantidade, setQuantidade] = useState("");
     const [preco, setPreco] = useState("");
 
-    function enviarProduto(e : any){
+    function enviarProduto(e: any) {
         e.preventDefault();
 
-        const produto : Produto = {
-            nome : nome,
-            descricao : descricao,
-            quantidade : Number(quantidade),
-            preco : Number(preco)
+        const produto: Produto = {
+            nome: nome,
+            descricao: descricao,
+            quantidade: Number(quantidade),
+            preco: Number(preco)
         };
 
-        fetch("http://localhost:5020/api/produto/cadastrar", 
+        fetch("http://localhost:5020/api/produto/cadastrar",
             {
-                method : "POST",
-                headers : {
-                    "Content-Type" : "application/json"
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
                 },
-                body : JSON.stringify(produto)
+                body: JSON.stringify(produto)
             })
             .then(resposta => {
                 return resposta.json();
@@ -41,6 +41,7 @@ function ProdutoCadastro() {
                 <div>
                     <label htmlFor="nome">Nome</label>
                     <input type="text" id="nome" name="nome"
+                        required
                         onChange={(e: any) => setNome(e.target.value)} />
                 </div>
 
@@ -52,14 +53,23 @@ function ProdutoCadastro() {
 
                 <div>
                     <label htmlFor="preco">Preço</label>
-                    <input type="number" id="preco" name="preco" 
+                    <input type="number" id="preco" name="preco"
                         onChange={(e: any) => setPreco(e.target.value)} />
                 </div>
 
                 <div>
                     <label htmlFor="quantidade">Quantidade</label>
-                    <input type="number" id="quantidade" name="quantidade" 
+                    <input type="number" id="quantidade" name="quantidade"
                         onChange={(e: any) => setQuantidade(e.target.value)} />
+                </div>
+
+                <div>
+                    <label htmlFor="quantidade">Categorias</label>
+                    <select onChange={(e: any) => console.log(e.target.value)}>
+                        <option value="1">Bebidas</option>
+                        <option value="2">Comidas</option>
+                        <option value="3">Roupas</option>
+                    </select>
                 </div>
 
                 <button type="submit">Cadastrar Produto</button>
